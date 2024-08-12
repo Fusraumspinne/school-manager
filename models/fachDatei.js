@@ -1,5 +1,12 @@
 import mongoose, { Schema, models } from 'mongoose';
 
+const themaSchema = new Schema({
+    name: {
+        type: String,
+        required: true
+    }
+});
+
 const fachDateiSchema = new Schema({
     fach: {
         type: String,
@@ -10,7 +17,7 @@ const fachDateiSchema = new Schema({
         required: true,
     },
     themen: {
-        type: [String],
+        type: [themaSchema],
         required: true
     }
 }, { timestamps: true });

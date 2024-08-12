@@ -58,11 +58,15 @@ function Datein() {
             return;
         }
 
+        const neuesThema = {
+            name: themaName,
+        };
+
         const updatedFächer = fächer.map((fach, index) => {
             if (index === selectedFachIndex) {
                 return {
                     ...fach,
-                    themen: [...fach.themen, themaName]
+                    themen: [...fach.themen, neuesThema]
                 };
             }
             return fach;
@@ -99,7 +103,7 @@ function Datein() {
     }
 
     useEffect(() => {
-        if(email){
+        if (email) {
             fetchFächer()
         }
     }, [email])
@@ -111,9 +115,9 @@ function Datein() {
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ email })
             });
-    
+
             if (resFetchFächer.ok) {
-                const data = await resFetchFächer.json(); 
+                const data = await resFetchFächer.json();
                 setFächer(data);
             } else {
                 console.error("Fehler beim Abrufen der Fächer");
@@ -165,16 +169,15 @@ function Datein() {
                                 <Accordion.Body>
                                     {fach.themen.map((thema, idx) => (
                                         <div key={idx}>
-                                            {isNaN(thema) ? (
-                                                <Link href={`${fach.email}-${thema}`} className="d-block">
-                                                    {thema}
+                                            {isNaN(thema.name) ? (
+                                                <Link href={`/fach/${thema._id}`} className="d-block">
+                                                    {thema.name} 
                                                 </Link>
                                             ) : (
-                                                <p className='fs-5 mb-0 mt-2'>Klasse: {thema}</p>
+                                                <p className='fs-5 mb-0 mt-2'>Klasse: {thema.name}</p> 
                                             )}
                                         </div>
                                     ))}
-
                                     <MagicButton extraClass={"full_width_button mt-3"} content={<><AddIcon className='me-2' /> Thema hinzufügen</>} funktion={() => handleToggleAdd("thema", index, fach.fach)} />
                                 </Accordion.Body>
                             </Accordion.Item>
