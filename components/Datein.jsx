@@ -21,6 +21,7 @@ function Datein() {
     const [selectedFachIndex, setSelectedFachIndex] = useState(null);
     const [currentFach, setCurrentFach] = useState("")
     const [fächer, setFächer] = useState([])
+    const [reload, setReload] = useState(false)
 
     useEffect(() => {
         setEmail(session?.user?.email)
@@ -35,6 +36,7 @@ function Datein() {
 
         setSelectedFachIndex(index);
         setCurrentFach(currentFach)
+        setReload(true)
     }
 
     const addFach = () => {
@@ -84,7 +86,7 @@ function Datein() {
         }
 
         try {
-            const resCreateFächer = await fetch("/api/createFaecher", {
+            const resSave = await fetch("/api/createFaecher", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({
@@ -92,7 +94,7 @@ function Datein() {
                 })
             })
 
-            if (resCreateFächer.ok) {
+            if (resSave.ok) {
                 console.log("Fächer wurden gespeichert")
             } else {
                 console.log("Fehler beim speichern der Fächer")
@@ -170,9 +172,15 @@ function Datein() {
                                     {fach.themen.map((thema, idx) => (
                                         <div key={idx}>
                                             {isNaN(thema.name) ? (
-                                                <Link href={`/fach/${thema._id}`} className="d-block">
-                                                    {thema.name} 
-                                                </Link>
+                                                reload ? (
+                                                    <Link href="#" className="d-block">
+                                                        {thema.name} 
+                                                    </Link>
+                                                ) : (
+                                                    <Link href={`/fach/${thema._id}`} className="d-block">
+                                                        {thema.name} 
+                                                    </Link>
+                                                )
                                             ) : (
                                                 <p className='fs-5 mb-0 mt-2'>Klasse: {thema.name}</p> 
                                             )}

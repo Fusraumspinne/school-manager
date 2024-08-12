@@ -1,9 +1,10 @@
-import React from 'react'
+import Thema from "@/components/Thema"
 
-function page({params}) {
+function page({ params }) {
+
   return (
     <div>
-        {params}
+        <Thema params={params}/>
     </div>
   )
 }

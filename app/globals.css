@@ -24,3 +24,31 @@
 .auswahl_accordion{
     width: 800px;
 }
+
+.card_thema{
+    width: 1000px;
+    height: 700px !important;
+}
+
+.seiten_anzahl{
+    width: 40px;
+    height: 40px;
+}
+
+.thema_content{
+    height: 700px !important;
+    overflow: auto;
+}
+
+.thema_footer{
+    height: 100px;
+}
+
+.textarea_seite{
+    width: calc(100% - 32px);
+    height: 100%;
+    border: 0;
+    resize: none;
+    outline: none;
+    background: transparent;
+}
