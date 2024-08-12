@@ -7,6 +7,7 @@ import Accordion from 'react-bootstrap/Accordion';
 import Link from 'next/link';
 import MagicButton from './ui/Button';
 import AddIcon from '@mui/icons-material/Add';
+import SaveIcon from '@mui/icons-material/Save';
 import Input from './ui/Input';
 
 function Datein() {
@@ -18,24 +19,7 @@ function Datein() {
     const [themaName, setThemaName] = useState("")
     const [selectedFachIndex, setSelectedFachIndex] = useState(null);
     const [currentFach, setCurrentFach] = useState("")
-
-    const [fächer, setFächer] = useState([
-        {
-            "fach": "Deutsch",
-            "email": "marvin@gmail.com",
-            "themen": ["10", "Analyse", "Grammatik", "Roman", "11", "Sachtext"]
-        },
-        {
-            "fach": "Geschichte",
-            "email": "marvin@gmail.com",
-            "themen": ["10", "Weltkrieg", "Römer", "11", "Neuzeit", "Mittelalter"]
-        },
-        {
-            "fach": "Mathe",
-            "email": "marvin@gmail.com",
-            "themen": ["10", "Geometri", "11", "Brüche", "Expotentielleswachstum", "Kopfrechnen"]
-        }
-    ])
+    const [fächer, setFächer] = useState([])
 
     useEffect(() => {
         setEmail(session?.user?.email)
@@ -65,7 +49,7 @@ function Datein() {
 
         setFächer([...fächer, newFach]);
         setFachName("")
-        setToggleAddFach("");
+        setToggle("");
     }
 
     const addThema = () => {
@@ -88,6 +72,55 @@ function Datein() {
         setToggle("");
         setSelectedFachIndex(null);
     }
+
+    const save = async () => {
+        if (!fächer) {
+            return
+        }
+
+        try {
+            const resCreateFächer = await fetch("/api/createFaecher", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                    fächer
+                })
+            })
+
+            if (resCreateFächer.ok) {
+                console.log("Fächer wurden gespeichert")
+            } else {
+                console.log("Fehler beim speichern der Fächer")
+            }
+        } catch (error) {
+            console.log("Fehler beim speichern der Fächer: ", error)
+        }
+    }
+
+    useEffect(() => {
+        if(email){
+            fetchFächer()
+        }
+    }, [email])
+
+    const fetchFächer = async () => {
+        try {
+            const resFetchFächer = await fetch("/api/getFaecher", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ email })
+            });
+    
+            if (resFetchFächer.ok) {
+                const data = await resFetchFächer.json(); 
+                setFächer(data);
+            } else {
+                console.error("Fehler beim Abrufen der Fächer");
+            }
+        } catch (error) {
+            console.error("Fehler beim Abrufen der Fächer: ", error);
+        }
+    };
 
     return (
         <div>
@@ -141,12 +174,12 @@ function Datein() {
                                         </div>
                                     ))}
 
-                                    <MagicButton extraClass={"full_width_button mt-3"} content={<><AddIcon /> Thema hinzufügen</>} funktion={() => handleToggleAdd("thema", index, fach.fach)} />
+                                    <MagicButton extraClass={"full_width_button mt-3"} content={<><AddIcon className='me-2' /> Thema hinzufügen</>} funktion={() => handleToggleAdd("thema", index, fach.fach)} />
                                 </Accordion.Body>
                             </Accordion.Item>
                         ))}
-                        <MagicButton
-                            extraClass={"full_width_button mt-3"} content={<><AddIcon /> Fach hinzufügen</>} funktion={() => handleToggleAdd("fach")} />
+                        <MagicButton extraClass={"full_width_button mt-3"} content={<><AddIcon className='me-2' /> Fach hinzufügen</>} funktion={() => handleToggleAdd("fach")} />
+                        <MagicButton extraClass={"full_width_button mt-3"} content={<><SaveIcon className='me-2' /> Speichern</>} funktion={save} />
                     </Accordion>
                 )}
             </div>
