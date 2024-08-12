@@ -16,7 +16,6 @@ function Navigationbar() {
                     <Nav.Link className="text-light" href="/datein">Datein</Nav.Link>
                     <Nav.Link className="text-light" href="/">Hausaufgaben</Nav.Link>
                     <Nav.Link className="text-light" href="/">KI</Nav.Link>
-                    <Nav.Link className="text-light" href="/">Support</Nav.Link>
                     <Nav.Link className="text-light" href="/">Account</Nav.Link>
                     </Nav>
                     <MagicButton funktion={() => signOut()} variant={"outline-light"} content={"Logout"}/>

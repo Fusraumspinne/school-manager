@@ -8,6 +8,7 @@ import Link from 'next/link';
 import MagicButton from './ui/Button';
 import AddIcon from '@mui/icons-material/Add';
 import SaveIcon from '@mui/icons-material/Save';
+import ClearIcon from '@mui/icons-material/Clear';
 import Input from './ui/Input';
 
 function Datein() {
@@ -126,7 +127,7 @@ function Datein() {
         <div>
             <Navigationbar />
 
-            <div className='main_div d-flex justify-content-center'>
+            <div className='main_div d-flex justify-content-center mx-4'>
                 {toggle ? (
                     toggle === "fach" ? (
                         <div className='card form_card'>
@@ -136,8 +137,8 @@ function Datein() {
                                 <Input type={"text"} placeholder={"Mathe"} onChange={(e) => setFachName(e.target.value)} extraClass={"mt-3 mx-4"} />
 
                                 <div className='mx-4'>
-                                    <MagicButton funktion={() => addFach("fach")} content={"hinzufügen"} extraClass={"full_width_button mt-3 mb-2"} />
-                                    <MagicButton funktion={handleToggleAdd} content={"abbrechen"} extraClass={"full_width_button mt-1 mb-4"} />
+                                    <MagicButton funktion={() => addFach("fach")} content={<><AddIcon className='me-2' /> Fach hinzufügen</>} extraClass={"full_width_button mt-3 mb-2"} />
+                                    <MagicButton funktion={handleToggleAdd} content={<><ClearIcon className='me-2' /> Abbrechen</>} extraClass={"full_width_button mt-1 mb-4"} />
                                 </div>
                             </div>
                         </div>
@@ -150,8 +151,8 @@ function Datein() {
                                 <Input type={"text"} placeholder={"Geometrie"} onChange={(e) => setThemaName(e.target.value)} extraClass={"mt-0 mx-4"} />
 
                                 <div className='mx-4'>
-                                    <MagicButton funktion={() => addThema(themaName)} content={"hinzufügen"} extraClass={"full_width_button mt-3 mb-2"} />
-                                    <MagicButton funktion={handleToggleAdd} content={"abbrechen"} extraClass={"full_width_button mt-1 mb-4"} />
+                                    <MagicButton funktion={() => addThema(themaName)} content={<><AddIcon className='me-2' /> Thema hinzufügen</>} extraClass={"full_width_button mt-3 mb-2"} />
+                                    <MagicButton funktion={handleToggleAdd} content={<><ClearIcon className='me-2' /> Abbrechen</>} extraClass={"full_width_button mt-1 mb-4"} />
                                 </div>
                             </div>
                         </div>
