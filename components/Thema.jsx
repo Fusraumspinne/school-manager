@@ -74,8 +74,6 @@ function Thema({ params }) {
     const newSeitenZahl = seitenZahl + zahl;
     if (newSeitenZahl > 0) {
       setSeitenZahl(newSeitenZahl);
-      console.log(seitenZahl)
-      console.log(seiten.content.length)
     }
   }
 

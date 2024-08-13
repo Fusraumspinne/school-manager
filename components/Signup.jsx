@@ -33,7 +33,7 @@ function Signup() {
             const {user} = await resUserExists.json()
 
             if(user) {
-                console.log("Diese Email ist vergeben")
+                console.error("Diese Email ist vergeben")
                 return
             }
 
@@ -52,10 +52,10 @@ function Signup() {
                 form.reset()
                 router.push("/")
             }else {
-                console.log("Ein Fehler ist beim erstellen eines Nutzers aufgetreten")
+                console.error("Ein Fehler ist beim erstellen eines Nutzers aufgetreten")
             }
         } catch (error){
-            console.log("Ein Fehler ist beim erstellen eines Nutzers aufgetreten", error)
+            console.error("Ein Fehler ist beim erstellen eines Nutzers aufgetreten", error)
         }
     }
 

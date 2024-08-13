@@ -97,10 +97,10 @@ function Datein() {
             if (resSave.ok) {
                 console.log("Fächer wurden gespeichert")
             } else {
-                console.log("Fehler beim speichern der Fächer")
+                console.error("Fehler beim speichern der Fächer")
             }
         } catch (error) {
-            console.log("Fehler beim speichern der Fächer: ", error)
+            console.error("Fehler beim speichern der Fächer: ", error)
         }
     }
 

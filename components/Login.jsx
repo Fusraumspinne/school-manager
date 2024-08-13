@@ -24,13 +24,13 @@ function Login() {
             })
 
             if(resLogin.error){
-                console.log("Falsche Anmeldedaten")
+                console.error("Falsche Anmeldedaten")
                 return
             }
 
             router.replace("dashboard")
         } catch(error){
-            console.log(error)
+            console.error(error)
         }
     }
 
