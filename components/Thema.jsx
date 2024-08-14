@@ -147,6 +147,7 @@ function Thema({ params }) {
         if (data && Array.isArray(data.content)) {
           setSeiten(data);
           setExists(true);
+          setFach(data.fach)
         } else {
           setSeiten({ id: themaId, content: [] });
           setExists(false);
@@ -156,7 +157,7 @@ function Thema({ params }) {
         console.error("Fehler beim Abrufen der Seiten");
       }
     } catch (error) {
-      console.error("Fehler beim Abrufen der Seiten:", error);
+      console.error("Fehler beim Abrufen der Seiten", error);
     }
   };
 
