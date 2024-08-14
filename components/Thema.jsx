@@ -17,6 +17,9 @@ function Thema({ params }) {
   const [seitenTitle, setSeitenTitle] = useState("")
   const [seitenInhalt, setSeitenInhalt] = useState("")
   const [seitenZahl, setSeitenZahl] = useState(1)
+  const [date, setDate] = useState("")
+  const [fach, setFach] = useState("")
+  const [selectFach, setSelectFach] = useState(false)
 
   useEffect(() => {
     const { id } = params;
@@ -59,7 +62,8 @@ function Thema({ params }) {
     const newContent = {
       title: `Neuer Titel`,
       content: "Hier kommt der Inhalt.",
-      seitenzahl: seiten.content.length + 1
+      seitenzahl: seiten.content.length + 1,
+      date: date
     };
 
     setSeiten(prevSeiten => ({
@@ -77,38 +81,50 @@ function Thema({ params }) {
     }
   }
 
+  useEffect(() => {
+    const date = new Date();
+    const formattedDate = date.toLocaleDateString("de-DE");
+    setDate(formattedDate)
+  }, [])
+
   const save = async () => {
-    if (!themaId) {
-      console.error("Fehlende Thema ID");
+    if (!themaId || !date) {
+      console.error("Fehlende Thema ID oder fehlendes Datum");
       return;
     }
-  
+
+    if (!fach) {
+      setSelectFach(true)
+      return
+    }
+
     const updatedContent = seiten.content.map(page =>
       page.seitenzahl === seitenZahl
         ? { ...page, title: seitenTitle, content: seitenInhalt }
         : page
     );
-  
+
     try {
       const resSave = await fetch("/api/createSeiten", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           id: themaId,
+          fach: fach,
           content: updatedContent
         })
       });
-  
+
       if (resSave.ok) {
-        await fetchSeiten(); 
-        setToggle(false); 
+        await fetchSeiten();
+        setToggle(false);
       } else {
         console.error("Fehler beim Speichern oder Aktualisieren der Seite");
       }
     } catch (error) {
       console.error("Fehler beim Speichern oder Aktualisieren der Seite:", error);
     }
-  };  
+  };
 
   useEffect(() => {
     fetchSeiten();
@@ -180,16 +196,23 @@ function Thema({ params }) {
           </div>
 
           <div className='thema_content card mx-3'>
-            {exists ? (
-              toogle ? (
-                <textarea onChange={(e) => setSeitenInhalt(e.target.value)} className='mt-2 mx-3 p-2 textarea_seite' value={seitenInhalt}></textarea>
-              ) : (
-                <div className='d-flex justify-content-start mt-2 mx-3 p-2'>{seitenInhalt}</div>
-              )
+            {selectFach ? (
+                <div className='d-flex justify-content-center align-items-center flex-column add_seite'>
+                  <Input placeholder={"Mathe"} onChange={(e) => setFach(e.target.value)} extraClass={"half_width_button"}/>
+                  <MagicButton extraClass={"half_width_button mt-3"} content={<><SaveIcon className='me-2' /> Fach festlegen</>} funktion={() => setSelectFach(false)}/>
+                </div>
             ) : (
-              <div className='d-flex justify-content-center align-items-center mt-2 mx-3 p-2 add_seite'>
-                <MagicButton content={<><AddIcon className='me-2' /> Seite hinzufügen</>} funktion={addSeite} />
-              </div>
+              exists ? (
+                toogle ? (
+                  <textarea onChange={(e) => setSeitenInhalt(e.target.value)} className='mt-2 mx-3 p-2 textarea_seite' value={seitenInhalt}></textarea>
+                ) : (
+                  <div className='d-flex justify-content-start mt-2 mx-3 p-2'>{seitenInhalt}</div>
+                )
+              ) : (
+                <div className='d-flex justify-content-center align-items-center mt-2 mx-3 p-2 add_seite'>
+                  <MagicButton content={<><AddIcon className='me-2' /> Seite hinzufügen</>} funktion={addSeite} />
+                </div>
+              )
             )}
 
           </div>
@@ -216,7 +239,7 @@ function Thema({ params }) {
               ) : (
                 <Pagination.Item className='seiten_anzahl d-flex justify-content-center' onClick={() => updateSeitenZahl(1)}>{seitenZahl + 1}</Pagination.Item>
               )}
-              
+
               {seitenZahl > seiten.content.length - 1 ? (
                 <Pagination.Item className='seiten_anzahl d-flex justify-content-center' >x</Pagination.Item>
               ) : (
@@ -224,9 +247,9 @@ function Thema({ params }) {
               )}
 
               {seitenZahl > seiten.content.length - 1 ? (
-                <Pagination.Last className='seiten_anzahl d-flex justify-content-center'/>
+                <Pagination.Last className='seiten_anzahl d-flex justify-content-center' />
               ) : (
-                <Pagination.Last className='seiten_anzahl d-flex justify-content-center' onClick={() => updateSeitenZahl(seiten.content.length - 1)}/>
+                <Pagination.Last className='seiten_anzahl d-flex justify-content-center' onClick={() => updateSeitenZahl(seiten.content.length - 1)} />
               )}
             </Pagination>
           </div>

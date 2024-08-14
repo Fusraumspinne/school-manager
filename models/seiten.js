@@ -12,6 +12,10 @@ const contentSchema = new Schema({
     seitenzahl: {
         type: Number,
         required: true
+    },
+    date: {
+        type: String,
+        required: true
     }
 });
 
@@ -19,6 +23,10 @@ const seitenSchema = new Schema({
     id: {
         type: String,
         required: true,
+    },
+    fach: {
+        type: String,
+        required: true
     },
     content: [contentSchema] 
 }, { timestamps: true });

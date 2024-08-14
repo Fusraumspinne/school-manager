@@ -6,6 +6,10 @@
     width: 100%;
 }
 
+.half_width_button {
+    width: 50%;
+}
+
 .curser_pointer{
     cursor: pointer;
 }

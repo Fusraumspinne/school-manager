@@ -4,12 +4,12 @@ import SeitenSchema from "@/models/seiten";
 
 export async function POST(req) {
     try {
-        const { id, content } = await req.json();
+        const { id, fach, content } = await req.json();
         await connectMongoDB();
 
         const updatedSeite = await SeitenSchema.findOneAndUpdate(
             { id: id }, 
-            { content: content },
+            { fach: fach, content: content },
             { upsert: true, new: true } 
         );
 
